@@ -3,12 +3,12 @@ module.exports = function(app) {
   var user = require('../controllers/userController');
 
   app.route('/user')
-    .get(user.list_users)
-    .post(user.create_user)
+    .get(user.getUsers)
+    .post(user.addUser)
 
 
-  app.route('/user/:facebookId')
-    .get(user.find_user)
-    .put(user.update_user)
-    .delete(user.delete_user);
+  app.route('/user/:userId')
+    .get(user.getUser)
+    .put(user.updateUser)
+    .delete(user.deleteUser);
 };

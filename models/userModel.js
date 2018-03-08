@@ -4,13 +4,12 @@ var Schema = mongoose.Schema;
 
 
 var UserSchema = new Schema({
-  facebookId: String,
+  userId: String,
   token: String,
   name: String,
   gender: String,
   email: String,
   likes: Array,
-  followingBrands: Array,
   followingBloggers: Array,
   picture: String,
 }, { timestamps: true });

@@ -1,5 +1,6 @@
+require('dotenv').load();
 var express = require('express');
-const apn = require('apn');
+var FCM = require('fcm-node');
 var app = express();
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var User = require('./models/userModel');
+var Video = require('./models/videoModel');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/myappdb');
 
@@ -41,47 +43,39 @@ videoRoutes(app);
 
 
 
-// Notififcation
+ // Firebase Notififcation 
 
-// Set up apn with the APNs Auth Key
-var apnProvider = new apn.Provider({  
-     token: {
-        key: 'apns.p8', // Path to the key p8 file
-        keyId: 'DZ9K5XNB8P', // The Key ID of the p8 file (available at https://developer.apple.com/account/ios/certificate/key)
-        teamId: '2GPV46WGDN', // The Team ID of your Apple Developer Account (available at https://developer.apple.com/account/#/membership/)
-    },
-    production: false // Set to true if sending a notification to a production iOS app
-});
+    var apiKey = process.env.API_KEY;
+    console.log('debug env',apiKey);
+    //var serverKey = 'AAAAtxsH7Co:APA91bHO5S-4_hmyD3abftWOGYibxze_dBPG4guKYJLA-ZPILkbUvU-28kt05klwqHC7u4Af7NrnvqYGeEb75bVuspGZtOhpC1EYEXUKnS0SF_ZXghh2zhSv27Y7Fd394MdD46LJiGHe'; //put your server key here
+    var fcm = new FCM(apiKey);
+    var ios_token = 'deD6KV-sIdw:APA91bFRN4ZZTGZKpJh_oThFpCCr9Coib1wYxsQiJw3ZgOwWsc99NrWVeOVBaPfJVEzoyQ4-Ro-KhdvLUyizk4Gh_qD3yFcne9PoFcLlAQ8_E5jrbmShvEAosU4e6XoO9qFvrxh38f3A'
+    var android_token = 'cnc9xJ6yM1M:APA91bFF17S3vXnirtp9exCnYiHwXKsfA-XeSXzAOpKDAvO_VIdPy0_oXTJPjL-On0A5asgsdXKKR_H4TkRJk62c6Dm3ECosMKUDTWvyPJJmWtAJoAy2QQBYFBV1BzHVeqzLSeD8CLWR'
+    var message = { 
+        registration_ids: [ios_token, android_token], 
+        collapse_key: 'com.myapp',
+        
+        notification: {
+            title: 'Title of your push notification', 
+            body: 'Body of your push notification' 
+        },
+        
+        data: {  
+            my_key: 'my value',
+            my_another_key: 'my another value'
+        }
+    };
+    
+    fcm.send(message, function(err, response){
+        if (err) {
+            console.log("Something has gone wrong!");
+        } else {
+            console.log("Successfully sent with response: ", response);
+        }
+    });
+ 
 
-// Enter the device token from the Xcode console
-var deviceToken = '6865646ab3a81c2fcf50e447535e73c0ff13ae62064e3dbb509eddf4b002790a';
 
-// Prepare a new notification
-var notification = new apn.Notification();
-
-// Specify your iOS app's Bundle ID (accessible within the project editor)
-notification.topic = 'org.reactjs.native.example.demoApp12345';
-
-// Set expiration to 1 hour from now (in case device is offline)
-notification.expiry = Math.floor(Date.now() / 1000) + 3600;
-
-// Set app badge indicator
-notification.badge = 3;
-
-// Play ping.aiff sound when the notification is received
-notification.sound = 'ping.aiff';
-
-// Display the following message (the actual notification text, supports emoji)
-notification.alert = 'Hello World \u270C';
-
-// Send any extra payload data with the notification which will be accessible to your app in didReceiveRemoteNotification
-notification.payload = {id: 123};
-
-// Actually send the notification
-apnProvider.send(notification, deviceToken).then(function(result) {  
-    // Check the result for any failed devices
-    console.log(result);
-});
 
 
 

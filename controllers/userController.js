@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('UserModel');
 
-exports.list_users = function(req, res) {
+exports.getUsers = function(req, res) {
   User.find({}, function(err,user){
     if (err)
       res.send(err);
@@ -10,7 +10,7 @@ exports.list_users = function(req, res) {
 };
 
 
-exports.create_user = function(req, res) {
+exports.addUser = function(req, res) {
   var new_user = new User(req.body);
   new_user.save(function(err, user) {
     if (err)
@@ -20,9 +20,9 @@ exports.create_user = function(req, res) {
 };
 
 
-exports.find_user = function(req, res) {
-  console.log('debug req', req.params.facebookId)
-  User.findOne({facebookId: req.params.facebookId}, function(err, user) {
+exports.getUser = function(req, res) {
+  console.log('debug req', req.params.userId)
+  User.findOne({userId: req.params.userId}, function(err, user) {
     if (err)
       res.send(err);
     res.json(user);
@@ -30,8 +30,8 @@ exports.find_user = function(req, res) {
 };
 
 
-exports.update_user = function(req, res) {
-  User.findOneAndUpdate({facebookId: req.params.facebookId}, req.body, {new: true}, function(err, user) {
+exports.updateUser = function(req, res) {
+  User.findOneAndUpdate({userId: req.params.userId}, req.body, {new: true}, function(err, user) {
     if (err)
       res.send(err);
     res.json(user);
@@ -39,15 +39,16 @@ exports.update_user = function(req, res) {
 };
 
 
-exports.delete_user = function(req, res) {
+exports.deleteUser = function(req, res) {
   User.remove({
-    facebookId: req.params.facebookId
+    userId: req.params.userId
   }, function(err, user) {
     if (err)
       res.send(err);
     res.json({ message: 'User successfully deleted' });
   });
 };
+
 
 //User.paginate({}, { page: 2, limit: 5 }, function(err, result) {
   //result.docs
