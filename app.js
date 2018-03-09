@@ -46,8 +46,6 @@ videoRoutes(app);
  // Firebase Notififcation 
 
     var apiKey = process.env.API_KEY;
-    console.log('debug env',apiKey);
-    //var serverKey = 'AAAAtxsH7Co:APA91bHO5S-4_hmyD3abftWOGYibxze_dBPG4guKYJLA-ZPILkbUvU-28kt05klwqHC7u4Af7NrnvqYGeEb75bVuspGZtOhpC1EYEXUKnS0SF_ZXghh2zhSv27Y7Fd394MdD46LJiGHe'; //put your server key here
     var fcm = new FCM(apiKey);
     var ios_token = 'deD6KV-sIdw:APA91bFRN4ZZTGZKpJh_oThFpCCr9Coib1wYxsQiJw3ZgOwWsc99NrWVeOVBaPfJVEzoyQ4-Ro-KhdvLUyizk4Gh_qD3yFcne9PoFcLlAQ8_E5jrbmShvEAosU4e6XoO9qFvrxh38f3A'
     var android_token = 'cnc9xJ6yM1M:APA91bFF17S3vXnirtp9exCnYiHwXKsfA-XeSXzAOpKDAvO_VIdPy0_oXTJPjL-On0A5asgsdXKKR_H4TkRJk62c6Dm3ECosMKUDTWvyPJJmWtAJoAy2QQBYFBV1BzHVeqzLSeD8CLWR'
