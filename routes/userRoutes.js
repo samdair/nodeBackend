@@ -6,9 +6,15 @@ module.exports = function(app) {
     .get(user.getUsers)
     .post(user.addUser)
 
-
   app.route('/user/:userId')
     .get(user.getUser)
     .put(user.updateUser)
     .delete(user.deleteUser);
+
+  app.route('/notify')
+    .post(user.notify)
+
+  app.route('/mail')
+    .post(user.mail)
+
 };

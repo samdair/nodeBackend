@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 
 var VideoSchema = new Schema({
   videoId: String,
+  album: String,
   title: String,
   imageUrl: String,
 }, { timestamps: true });

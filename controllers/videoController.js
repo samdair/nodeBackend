@@ -8,6 +8,13 @@ exports.getVideos = function(req, res) {
       res.json(Video);
     }); 
 };
+exports.getVideosByAlbum = function(req, res) {
+  Video.find({album: req.params.name}, function(err,Video){
+    if (err)
+      res.send(err);
+      res.json(Video);
+    }); 
+};
 
 
 exports.addVideo = function(req, res) {

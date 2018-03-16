@@ -5,4 +5,12 @@ module.exports = function(app) {
   app.route('/video')
     .get(video.getVideos)
     .post(video.addVideo);
+
+  app.route('/video/:videoId')
+	.get(video.getVideo)
+	.put(video.updateVideo)
+	.delete(video.deleteVideo);
+
+  app.route('/videosByAlbum/:name')
+	.get(video.getVideosByAlbum);
 };
